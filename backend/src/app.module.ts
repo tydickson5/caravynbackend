@@ -13,6 +13,7 @@ import { SupabaseModule } from './supabaseModule';
 import { CommentModule } from './posts/comments/comments.module';
 import { LikeModule } from './posts/likes/likes.module';
 import { FriendModule } from './friends/friends.module';
+import { TripModule } from './trips/trips.module';
 
 
 @Module({
@@ -26,7 +27,8 @@ import { FriendModule } from './friends/friends.module';
         PostModule,
         CommentModule,
         LikeModule,
-        FriendModule
+        FriendModule,
+        TripModule
     ],
     controllers: [AppController,DeviceTokenController],
     providers: [AppService, SupabaseService],

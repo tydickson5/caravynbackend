@@ -3,19 +3,20 @@ import { NotificationService } from "src/apn/notification.service";
 import { SupabaseService } from "src/supabaseService";
 
 @Injectable()
-export class tripsService{
+export class TripService{
     constructor(
         private readonly supabase: SupabaseService,
         private readonly notificationService: NotificationService
     ){}
 
-    async startTrip(userId: string, username: string, name: string){
+    async startTrip(userId: string, username: string, name: string, description: string){
         //create trip + notification
         const { data, error } = await this.supabase.client
             .from("trips")
             .insert({
                 user_id: userId,
-                name: name
+                name: name,
+                description: description
             })
             .select()
             .single()
@@ -41,8 +42,7 @@ export class tripsService{
         const { data, error } = await this.supabase.client
             .from("trips")
             .update({
-                ended_at: Date,
-                active: false
+                ended_at: Date
             })
             .eq("id", tripId)
 
