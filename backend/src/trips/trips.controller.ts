@@ -31,4 +31,18 @@ export class TripController {
     ){
         return this.tripsService.endTrip(body.tripId)
     }
+
+    @Post('update')
+    async update(
+        @Body()
+        body: {
+            tripId: string,
+            name: string,
+            description: string,
+            created_at: string,
+            ended_at: string,
+        }
+    ){
+        return this.tripsService.updateTrip(body.tripId, body.name, body.description, body.created_at, body.ended_at)
+    }
 }

@@ -37,12 +37,12 @@ export class TripService{
 
     }
 
-    async endTrip(tripId: string, ){
+    async endTrip(tripId: string){
         //update ended_at to timestamp and active -> false + notification
         const { data, error } = await this.supabase.client
             .from("trips")
             .update({
-                ended_at: Date
+                ended_at: new Date()
             })
             .eq("id", tripId)
 
@@ -106,5 +106,25 @@ export class TripService{
             throw error
         }
 
+    }
+
+    async updateTrip(tripId: string, name: string, description: string, created_at: string, ended_at: string) {
+        const {data, error} = await this.supabase.client
+            .from("trips")
+            .update({
+                name: name,
+                description: description,
+                created_at: created_at,
+                ended_at: ended_at
+            })
+            .eq("id", tripId)
+            .select()
+            .single()
+
+        if(error){
+            throw error
+        }
+
+        return data
     }
 }
