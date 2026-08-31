@@ -170,4 +170,20 @@ export class PostService{
 
         return data
     }
+
+    async getPostsByUserAndDate(userId: string, created_at: string, ended_at: string) {
+        const { data, error } = await this.supabase.client
+            .from('posts')
+            .select('*')
+            .eq('user_id', userId)
+            .gte('created_at', created_at)
+            .lte('created_at', ended_at)
+            .order('created_at', { ascending: true });
+
+        if (error) {
+            throw error;
+        }
+
+        return data;
+    }
 }

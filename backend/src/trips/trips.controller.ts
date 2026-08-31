@@ -45,4 +45,14 @@ export class TripController {
     ){
         return this.tripsService.updateTrip(body.tripId, body.name, body.description, body.created_at, body.ended_at)
     }
+
+    @Post('get')
+    async get(
+        @Body()
+        body: {
+            tripId: string
+        }
+    ){
+        return this.tripsService.getTripFromId(body.tripId)
+    }
 }

@@ -127,4 +127,14 @@ export class TripService{
 
         return data
     }
+
+    async getTripFromId(tripId: string){
+        const {data, error} = await this.supabase.client.from("trips").select("*").eq("id", tripId).single()
+
+        if(error){
+            throw error
+        }
+
+        return data
+    }
 }

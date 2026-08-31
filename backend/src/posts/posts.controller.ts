@@ -42,5 +42,17 @@ export class PostController {
         return this.postsService.deletePost(body.post_id, body.post_type, body.bucket_path)
     }
 
+    @Post('get')
+    async get(
+        @Body()
+        body: {
+            user_id: string,
+            created_at: string,
+            ended_at: string
+        }
+    ){
+        return this.postsService.getPostsByUserAndDate(body.user_id, body.created_at, body.ended_at)
+    }
+
     
 }
