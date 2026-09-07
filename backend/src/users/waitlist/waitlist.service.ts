@@ -7,8 +7,8 @@ export class WaitlistedUserService{
         private readonly supabase: SupabaseService,
     ){}
 
-    async addUserToWaitlist(email: string){
-        const {data, error} = await this.supabase.client.from('waitlisted').insert({"email": email}).select().single()
+    async addUserToWaitlist(email: string, betaTester: boolean){
+        const {data, error} = await this.supabase.client.from('waitlisted').insert({"email": email, "beta_tester": betaTester}).select().single()
 
         if(error){
             throw error

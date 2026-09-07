@@ -14,6 +14,7 @@ import { CommentModule } from './posts/comments/comments.module';
 import { LikeModule } from './posts/likes/likes.module';
 import { FriendModule } from './friends/friends.module';
 import { TripModule } from './trips/trips.module';
+import { WaitlistUserModule } from './users/waitlist/waitlist.module';
 
 
 @Module({
@@ -28,7 +29,8 @@ import { TripModule } from './trips/trips.module';
         CommentModule,
         LikeModule,
         FriendModule,
-        TripModule
+        TripModule,
+        WaitlistUserModule
     ],
     controllers: [AppController,DeviceTokenController],
     providers: [AppService, SupabaseService],
