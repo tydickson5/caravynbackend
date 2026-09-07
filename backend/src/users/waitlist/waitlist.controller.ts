@@ -11,9 +11,9 @@ export class WaitlistedUsers {
         @Body()
         body: {
             email: string,
-            betaTester: boolean
+            betaTesting: boolean
         }
     ){
-        return this.waitlistUserService.addUserToWaitlist(body.email, body.betaTester)
+        return this.waitlistUserService.addUserToWaitlist(body.email, body.betaTesting)
     }
 }
