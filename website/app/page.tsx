@@ -1,12 +1,10 @@
 import Map from "./map/map";
-import TripPage from "./trip/tripView";
-import { Form } from "./waitlist_form/form";
-
 
 export default function Home() {
   return (
-    <div>
-
-    </div>
+    <main style={{ width: "100%", height: "100vh" }}>
+      <Map style={{ height: "100vh" }} />
+    </main>
   );
 }
+
