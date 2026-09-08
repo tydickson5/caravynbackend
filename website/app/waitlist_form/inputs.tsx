@@ -1,24 +1,25 @@
 type Props = {
-  email: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-}
+  email?: string;
+  onEmailChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  password?: string;
+  onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
-export function Inputs({ email, onEmailChange, password,  onPasswordChange}: Props) {
+export function Inputs({ email, onEmailChange, password, onPasswordChange }: Props) {
   return (
     <div>
-      <p>{email}</p>
-
       <input
-        value={email ?? ""}
+        type="email"
+        value={email ?? ''}
         onChange={onEmailChange}
         placeholder="Enter email"
       />
       <input
         type="password"
-        value={password ?? ""}
+        value={password ?? ''}
         onChange={onPasswordChange}
         placeholder="Enter password"
       />
     </div>
-  )
+  );
 }

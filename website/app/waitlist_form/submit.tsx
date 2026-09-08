@@ -1,24 +1,24 @@
-export function Submit({email}){
+type Props = {
+  email: string;
+};
 
-    async function join(){
+export function Submit({ email }: Props) {
+  async function join() {
+    await fetch('/api/waitlist', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        betaTesting: true,
+      }),
+    });
+  }
 
-        var response = await fetch("http://192.168.10.119:3000/users/waitlist", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email,
-            }),
-        })
-        console.log(response)
-        console.log(email)
-    }
-
-    return (
-        <div>
-            <button onClick={join}>Join</button>
-        </div>
-    )
-
+  return (
+    <div>
+      <button onClick={join}>Join</button>
+    </div>
+  );
 }

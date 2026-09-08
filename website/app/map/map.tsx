@@ -179,22 +179,50 @@ export default function Map({
         <div style="max-width:200px">
           ${imgSrc ? `<img src="${imgSrc}" alt="${post.caption || 'Post image'}" style="width:100%;border-radius:8px;margin-bottom:6px;display:block" />` : ''}
           ${post.caption ? `<div style="font-size:13px;font-weight:600;color:#111;margin-bottom:4px">${post.caption}</div>` : ''}
-          <div style="font-size:12px;color:#666">
+          <div style="font-size:12px;color:#666;margin-bottom:8px">
             ${new Date(post.created_at).toLocaleDateString(undefined, {
               month: 'short',
               day: 'numeric',
               year: 'numeric',
             })}
           </div>
+          <button
+            class="see-more-btn"
+            style="width:100%;padding:7px 12px;background:#4B2492;color:#ffffff;font-size:12px;font-weight:600;border:none;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity 0.15s ease;"
+            onmouseover="this.style.opacity='0.9'"
+            onmouseout="this.style.opacity='1'"
+          >
+            See more &darr;
+          </button>
         </div>
       `;
+
+      const popup = new mapboxgl.Popup({ offset: 30 }).setHTML(popupHtml);
+
+      popup.on('open', () => {
+        const btn = popup.getElement()?.querySelector('.see-more-btn');
+        if (btn) {
+          btn.addEventListener('click', () => {
+            const waitlistSec = document.getElementById('waitlist');
+            if (waitlistSec) {
+              waitlistSec.scrollIntoView({ behavior: 'smooth' });
+              setTimeout(() => {
+                const input = document.getElementById('waitlist-email');
+                input?.focus();
+              }, 600);
+            } else {
+              window.location.href = '/waitlist';
+            }
+          });
+        }
+      });
 
       new mapboxgl.Marker({
         element: el,
         anchor: 'center',
       })
         .setLngLat([lng, lat])
-        .setPopup(new mapboxgl.Popup({ offset: 30 }).setHTML(popupHtml))
+        .setPopup(popup)
         .addTo(map);
 
       bounds.extend([lng, lat]);
