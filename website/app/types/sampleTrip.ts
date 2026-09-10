@@ -3,8 +3,8 @@ import type { Trip } from './trip';
 export const sampleTrip: Trip = {
   id: '221b9c58-1de3-42d1-baee-fc5c138a7540',
   user_id: '51dd8574-e9eb-4346-b79b-94e121a986cf',
-  name: 'Test Trip',
-  description: 'Activity trip with photos',
+  name: 'Summer Travels',
+  description: 'Summer road trip exploring mountain trails, scenic routes, and local favorites',
   created_at: '2026-08-03T01:34:00+00:00',
   ended_at: '2026-09-02T01:34:00+00:00',
   posts: [

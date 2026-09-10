@@ -211,7 +211,7 @@ export default function Map({
                 input?.focus();
               }, 600);
             } else {
-              window.location.href = '/waitlist';
+              window.location.href = '/';
             }
           });
         }
