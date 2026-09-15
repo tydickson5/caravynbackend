@@ -7,6 +7,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import type { Trip } from '../types/trip';
 
 import { sampleTrip } from '../types/sampleTrip';
+import { getSupabaseConfig } from '../lib/supabaseConfig';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!;
 
@@ -15,12 +16,9 @@ export function getMediaUrl(path?: string | null): string | null {
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
   }
-  const supabaseUrl =
-    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://coeythfyfwzrwzuqowfe.supabase.co';
-  const bucket =
-    process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET || 'post-media';
+  const { supabaseUrl, storageBucket } = getSupabaseConfig();
   const cleanPath = path.replace(/^\/+/, '');
-  return `${supabaseUrl.replace(/\/+$/, '')}/storage/v1/object/public/${bucket}/${cleanPath}`;
+  return `${supabaseUrl}/storage/v1/object/public/${storageBucket}/${cleanPath}`;
 }
 
 export default function Map({

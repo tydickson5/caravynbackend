@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import TripClientView from './tripClient';
 import type { Trip, Post } from '../types/trip';
 import { sampleTrip } from '../types/sampleTrip';
+import { getSupabaseConfig } from '../lib/supabaseConfig';
 
 interface PageProps {
   params: Promise<{ tripId: string }>;
@@ -13,12 +14,10 @@ async function fetchTripData(tripId: string): Promise<{ trip: Trip; isFallback: 
     return { trip: sampleTrip, isFallback: false };
   }
 
-  const supabaseUrl =
-    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://coeythfyfwzrwzuqowfe.supabase.co';
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const { supabaseUrl, serviceRoleKey } = getSupabaseConfig();
 
   if (serviceRoleKey) {
-    const cleanUrl = supabaseUrl.replace(/\/+$/, '');
+    const cleanUrl = supabaseUrl;
     const headers = {
       apikey: serviceRoleKey,
       Authorization: `Bearer ${serviceRoleKey}`,

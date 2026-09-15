@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getSupabaseConfig } from '../../lib/supabaseConfig';
 
 export async function POST(request: Request) {
   try {
@@ -52,9 +53,7 @@ export async function POST(request: Request) {
     }
 
     // 2. Direct Supabase fallback
-    const supabaseUrl =
-      process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://coeythfyfwzrwzuqowfe.supabase.co';
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const { supabaseUrl, serviceRoleKey } = getSupabaseConfig();
 
     if (!serviceRoleKey) {
       console.error('SUPABASE_SERVICE_ROLE_KEY is missing.');

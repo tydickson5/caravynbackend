@@ -6,7 +6,9 @@
     "dev": "next dev -p 4000",
     "build": "next build",
     "start": "next start -p 4000",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:dev": "node -e \"const fs=require('fs'); let c=fs.readFileSync('.env','utf8'); c=c.replace(/NEXT_PUBLIC_DB_ENV=.*/, 'NEXT_PUBLIC_DB_ENV=dev'); fs.writeFileSync('.env',c); console.log('Switched active database to DEV (testing)');\"",
+    "db:prod": "node -e \"const fs=require('fs'); let c=fs.readFileSync('.env','utf8'); c=c.replace(/NEXT_PUBLIC_DB_ENV=.*/, 'NEXT_PUBLIC_DB_ENV=prod'); fs.writeFileSync('.env',c); console.log('Switched active database to PROD (real data)');\""
   },
   "dependencies": {
     "mapbox-gl": "^3.29.0",
