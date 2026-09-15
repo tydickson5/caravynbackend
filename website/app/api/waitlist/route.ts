@@ -58,7 +58,7 @@ export async function POST(request: Request) {
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      Prefer: 'return=representation',
+      Prefer: 'return=minimal',
     };
     if (token) {
       headers['apikey'] = token;
@@ -112,7 +112,12 @@ export async function POST(request: Request) {
         });
 
         if (res.ok) {
-          const data = await res.json();
+          let data = null;
+          try {
+            data = await res.json();
+          } catch {
+            data = { success: true };
+          }
           return NextResponse.json({ success: true, data });
         } else {
           lastError = await res.text();
