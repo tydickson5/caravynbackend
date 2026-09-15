@@ -125,8 +125,18 @@ export async function POST(request: Request) {
     }
 
     console.error('All waitlist insertion attempts failed:', lastError);
+    const isRlsError = lastError.includes('row-level security') || lastError.includes('42501');
+    const isJwtError = lastError.includes('JWT') || lastError.includes('token') || lastError.includes('Invalid API key');
+
+    let errorMessage = 'Failed to submit application. Please try again.';
+    if (isRlsError) {
+      errorMessage = 'Database permission error: please verify SUPABASE_SERVICE_ROLE_KEY is configured in your environment or enable public waitlist insert in Supabase.';
+    } else if (isJwtError) {
+      errorMessage = 'Authentication error: please verify your Supabase API keys in your environment variables.';
+    }
+
     return NextResponse.json(
-      { error: 'Failed to submit application. Please try again.' },
+      { error: errorMessage, details: process.env.NODE_ENV !== 'production' ? lastError : undefined },
       { status: 500 }
     );
   } catch (error) {

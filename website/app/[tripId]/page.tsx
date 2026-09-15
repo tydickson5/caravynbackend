@@ -14,15 +14,18 @@ async function fetchTripData(tripId: string): Promise<{ trip: Trip; isFallback: 
     return { trip: sampleTrip, isFallback: false };
   }
 
-  const { supabaseUrl, apiKey } = getSupabaseConfig();
+  const { supabaseUrl, apiKey, serviceRoleKey } = getSupabaseConfig();
 
+  // Server-side only: Use serviceRoleKey if available to bypass Supabase RLS on posts table,
+  // falling back to anon apiKey. Safe because page.tsx is a Next.js Server Component.
+  const token = serviceRoleKey || apiKey;
   const cleanUrl = supabaseUrl;
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   };
-  if (apiKey) {
-    headers['apikey'] = apiKey;
-    headers['Authorization'] = `Bearer ${apiKey}`;
+  if (token) {
+    headers['apikey'] = token;
+    headers['Authorization'] = `Bearer ${token}`;
   }
 
     try {
@@ -82,6 +85,11 @@ async function fetchTripData(tripId: string): Promise<{ trip: Trip; isFallback: 
             }
           }
 
+          // Exclude posts with (0,0) coordinates that distort map zoom/bounds
+          const validPosts = (Array.isArray(posts) ? posts : []).filter(
+            (p) => !(Number(p.latitude) === 0 && Number(p.longitude) === 0)
+          );
+
           return {
             trip: {
               id: trip.id,
@@ -90,7 +98,7 @@ async function fetchTripData(tripId: string): Promise<{ trip: Trip; isFallback: 
               description: trip.description || '',
               created_at: trip.created_at,
               ended_at: trip.ended_at ?? null,
-              posts: Array.isArray(posts) ? posts : [],
+              posts: validPosts,
             },
             isFallback: false,
           };

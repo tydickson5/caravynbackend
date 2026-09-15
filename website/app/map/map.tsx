@@ -34,8 +34,8 @@ export default function Map({
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    // Filter out any posts missing coordinates and sort in order created
-    const posts = (trip?.posts?.filter((p) => p.latitude != null && p.longitude != null) ?? [])
+    // Filter out any posts missing coordinates or at null island (0,0), and sort in order created
+    const posts = (trip?.posts?.filter((p) => p.latitude != null && p.longitude != null && !(Number(p.latitude) === 0 && Number(p.longitude) === 0)) ?? [])
       .slice()
       .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
 
@@ -147,6 +147,22 @@ export default function Map({
         card.style.backgroundImage = `url("${imgSrc}")`;
         card.style.backgroundSize = 'cover';
         card.style.backgroundPosition = 'center';
+
+        const testImg = new Image();
+        testImg.onerror = () => {
+          card.style.backgroundImage = 'none';
+          card.style.backgroundColor = '#4B2492';
+          card.style.display = 'flex';
+          card.style.alignItems = 'center';
+          card.style.justifyContent = 'center';
+          card.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+          `;
+        };
+        testImg.src = imgSrc;
       } else {
         card.style.display = 'flex';
         card.style.alignItems = 'center';
@@ -175,7 +191,7 @@ export default function Map({
 
       const popupHtml = `
         <div style="max-width:200px">
-          ${imgSrc ? `<img src="${imgSrc}" alt="${post.caption || 'Post image'}" style="width:100%;border-radius:8px;margin-bottom:6px;display:block" />` : ''}
+          ${imgSrc ? `<img src="${imgSrc}" alt="${post.caption || 'Post image'}" style="width:100%;border-radius:8px;margin-bottom:6px;display:block" onerror="this.style.display='none'" />` : ''}
           ${post.caption ? `<div style="font-size:13px;font-weight:600;color:#111;margin-bottom:4px">${post.caption}</div>` : ''}
           <div style="font-size:12px;color:#666;margin-bottom:8px">
             ${new Date(post.created_at).toLocaleDateString(undefined, {
