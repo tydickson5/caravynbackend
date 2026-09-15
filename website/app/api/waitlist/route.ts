@@ -23,10 +23,10 @@ export async function POST(request: Request) {
     const cleanBestExp = typeof bestTravelExperience === 'string' ? bestTravelExperience.trim() : '';
     const cleanNextTrip = typeof nextTrip === 'string' ? nextTrip.trim() : '';
 
-    // 1. Attempt to call NestJS backend if available
+    // 1. Attempt to call NestJS backend if available (only in development or if BACKEND_INTERNAL_URL is set)
     const backendUrls = [
       process.env.BACKEND_INTERNAL_URL,
-      'http://localhost:3000',
+      process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : null,
     ].filter(Boolean) as string[];
 
     for (const backendUrl of backendUrls) {

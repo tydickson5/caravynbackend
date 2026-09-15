@@ -41,7 +41,9 @@ export function getSupabaseConfig() {
     process.env.SUPABASE_ANON_KEY_DEV ||
     '';
   const devServiceKey =
-    process.env.SUPABASE_SERVICE_ROLE_KEY_DEV || '';
+    process.env.SUPABASE_SERVICE_ROLE_KEY_DEV ||
+    process.env.SUPABASE_SERVICE_KEY_DEV ||
+    '';
 
   // PROD credentials (Real Data DB)
   const prodUrl =
@@ -56,6 +58,8 @@ export function getSupabaseConfig() {
   const prodServiceKey =
     process.env.SUPABASE_SERVICE_ROLE_KEY_PROD ||
     process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_SERVICE_KEY ||
+    process.env.SERVICE_ROLE_KEY ||
     '';
 
   const supabaseUrl = (isDev ? devUrl : prodUrl) || devUrl;
