@@ -1,14 +1,14 @@
 /**
  * Centralized Supabase configuration manager.
- * Allows swapping between Testing (dev) and Real Data (prod) databases.
+ * Uses public Anon keys so you DO NOT need the privileged service_role key.
  *
  * How to swap:
  * 1. In website/.env, toggle NEXT_PUBLIC_DB_ENV:
  *      NEXT_PUBLIC_DB_ENV=dev   -> uses testing database
  *      NEXT_PUBLIC_DB_ENV=prod  -> uses real production database
  * 2. Or run:
- *      npm run env:dev
- *      npm run env:prod
+ *      npm run db:dev
+ *      npm run db:prod
  *
  * When deploying (NODE_ENV === 'production'), if NEXT_PUBLIC_DB_ENV is omitted,
  * it automatically defaults to 'prod'.
@@ -42,23 +42,29 @@ export function getSupabaseConfig() {
   const devUrl =
     process.env.NEXT_PUBLIC_SUPABASE_URL_DEV ||
     'https://coeythfyfwzrwzuqowfe.supabase.co';
-  const devServiceKey =
-    process.env.SUPABASE_SERVICE_ROLE_KEY_DEV || '';
+  const devApiKey =
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY_DEV ||
+    process.env.SUPABASE_ANON_KEY_DEV ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY_DEV ||
+    '';
 
   // PROD credentials (Real Data DB)
   const prodUrl =
     process.env.NEXT_PUBLIC_SUPABASE_URL_PROD ||
     process.env.NEXT_PUBLIC_SUPABASE_URL ||
     'https://vdxqfhrsuhmqdbpeqtbt.supabase.co';
-  const prodServiceKey =
+  const prodApiKey =
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY_PROD ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
     process.env.SUPABASE_SERVICE_ROLE_KEY_PROD ||
     process.env.SUPABASE_SERVICE_ROLE_KEY ||
     '';
 
   const supabaseUrl = (isDev ? devUrl : prodUrl) || devUrl;
-  const serviceRoleKey = isDev
-    ? (devServiceKey || prodServiceKey)
-    : (prodServiceKey || devServiceKey);
+  const apiKey = isDev
+    ? (devApiKey || prodApiKey)
+    : (prodApiKey || devApiKey);
   const storageBucket =
     process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET || 'post-media';
 
@@ -66,8 +72,7 @@ export function getSupabaseConfig() {
     activeEnv,
     isDev,
     supabaseUrl: supabaseUrl.replace(/\/+$/, ''),
-    serviceRoleKey,
+    apiKey,
     storageBucket,
   };
 }
-

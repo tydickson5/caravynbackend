@@ -53,22 +53,16 @@ export async function POST(request: Request) {
     }
 
     // 2. Direct Supabase fallback
-    const { supabaseUrl, serviceRoleKey } = getSupabaseConfig();
+    const { supabaseUrl, apiKey } = getSupabaseConfig();
 
-    if (!serviceRoleKey) {
-      console.error('SUPABASE_SERVICE_ROLE_KEY is missing.');
-      return NextResponse.json(
-        { error: 'Server configuration error.' },
-        { status: 500 }
-      );
-    }
-
-    const headers = {
-      apikey: serviceRoleKey,
-      Authorization: `Bearer ${serviceRoleKey}`,
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       Prefer: 'return=representation',
     };
+    if (apiKey) {
+      headers['apikey'] = apiKey;
+      headers['Authorization'] = `Bearer ${apiKey}`;
+    }
 
     const baseUrl = supabaseUrl.replace(/\/+$/, '');
 

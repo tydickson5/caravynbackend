@@ -14,15 +14,16 @@ async function fetchTripData(tripId: string): Promise<{ trip: Trip; isFallback: 
     return { trip: sampleTrip, isFallback: false };
   }
 
-  const { supabaseUrl, serviceRoleKey } = getSupabaseConfig();
+  const { supabaseUrl, apiKey } = getSupabaseConfig();
 
-  if (serviceRoleKey) {
-    const cleanUrl = supabaseUrl;
-    const headers = {
-      apikey: serviceRoleKey,
-      Authorization: `Bearer ${serviceRoleKey}`,
-      'Content-Type': 'application/json',
-    };
+  const cleanUrl = supabaseUrl;
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  if (apiKey) {
+    headers['apikey'] = apiKey;
+    headers['Authorization'] = `Bearer ${apiKey}`;
+  }
 
     try {
       // 1. Fetch trip from Supabase
@@ -98,7 +99,6 @@ async function fetchTripData(tripId: string): Promise<{ trip: Trip; isFallback: 
     } catch (err) {
       console.error('Error querying Supabase for trip:', err);
     }
-  }
 
   // Fallback to sampleTrip if trip could not be found or fetched
   return { trip: sampleTrip, isFallback: true };
