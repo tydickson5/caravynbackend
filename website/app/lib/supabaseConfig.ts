@@ -1,17 +1,12 @@
 /**
  * Centralized Supabase configuration manager.
- * Uses public Anon keys so you DO NOT need the privileged service_role key.
+ * Supports swapping between Testing (dev) and Real Data (prod) databases.
  *
- * How to swap:
- * 1. In website/.env, toggle NEXT_PUBLIC_DB_ENV:
- *      NEXT_PUBLIC_DB_ENV=dev   -> uses testing database
- *      NEXT_PUBLIC_DB_ENV=prod  -> uses real production database
- * 2. Or run:
- *      npm run db:dev
- *      npm run db:prod
- *
- * When deploying (NODE_ENV === 'production'), if NEXT_PUBLIC_DB_ENV is omitted,
- * it automatically defaults to 'prod'.
+ * Security Note:
+ * - apiKey (anon key): Safe for client-side and public queries.
+ * - serviceRoleKey: Kept strictly on the server (/api/ routes) to securely
+ *   insert waitlist applications through Supabase Row-Level Security (RLS).
+ *   Never exposed to the browser.
  */
 
 export type DbEnvironment = 'dev' | 'prod';
@@ -30,7 +25,6 @@ export function getActiveDbEnv(): DbEnvironment {
     return 'dev';
   }
 
-  // Automatic fallback: production deployments use prod, local dev defaults to dev
   return process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
 }
 
@@ -45,8 +39,9 @@ export function getSupabaseConfig() {
   const devApiKey =
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY_DEV ||
     process.env.SUPABASE_ANON_KEY_DEV ||
-    process.env.SUPABASE_SERVICE_ROLE_KEY_DEV ||
     '';
+  const devServiceKey =
+    process.env.SUPABASE_SERVICE_ROLE_KEY_DEV || '';
 
   // PROD credentials (Real Data DB)
   const prodUrl =
@@ -57,6 +52,8 @@ export function getSupabaseConfig() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY_PROD ||
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
     process.env.SUPABASE_ANON_KEY ||
+    '';
+  const prodServiceKey =
     process.env.SUPABASE_SERVICE_ROLE_KEY_PROD ||
     process.env.SUPABASE_SERVICE_ROLE_KEY ||
     '';
@@ -65,6 +62,9 @@ export function getSupabaseConfig() {
   const apiKey = isDev
     ? (devApiKey || prodApiKey)
     : (prodApiKey || devApiKey);
+  const serviceRoleKey = isDev
+    ? (devServiceKey || prodServiceKey)
+    : (prodServiceKey || devServiceKey);
   const storageBucket =
     process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET || 'post-media';
 
@@ -73,6 +73,7 @@ export function getSupabaseConfig() {
     isDev,
     supabaseUrl: supabaseUrl.replace(/\/+$/, ''),
     apiKey,
+    serviceRoleKey,
     storageBucket,
   };
 }

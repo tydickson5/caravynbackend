@@ -53,26 +53,24 @@ export async function POST(request: Request) {
     }
 
     // 2. Direct Supabase fallback
-    const { supabaseUrl, apiKey } = getSupabaseConfig();
+    const { supabaseUrl, apiKey, serviceRoleKey } = getSupabaseConfig();
+    const token = serviceRoleKey || apiKey;
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       Prefer: 'return=representation',
     };
-    if (apiKey) {
-      headers['apikey'] = apiKey;
-      headers['Authorization'] = `Bearer ${apiKey}`;
+    if (token) {
+      headers['apikey'] = token;
+      headers['Authorization'] = `Bearer ${token}`;
     }
 
     const baseUrl = supabaseUrl.replace(/\/+$/, '');
 
-    // Try table options in order:
-    // 1) 'waitlisted' (matching backend/src/users/waitlist/waitlist.service.ts)
-    // 2) 'waitlist_user' (existing website fallback)
-    // 3) 'waitlist' (users.service.ts fallback)
+    // Try table options in order (waitlist_user is primary in Supabase schema):
     const attempts = [
       {
-        url: `${baseUrl}/rest/v1/waitlisted`,
+        url: `${baseUrl}/rest/v1/waitlist_user`,
         payload: {
           email: cleanEmail,
           beta_testing: isBetaTesting,
@@ -81,7 +79,7 @@ export async function POST(request: Request) {
         },
       },
       {
-        url: `${baseUrl}/rest/v1/waitlist_user`,
+        url: `${baseUrl}/rest/v1/waitlisted`,
         payload: {
           email: cleanEmail,
           beta_testing: isBetaTesting,
