@@ -175,3 +175,4 @@ export function MiniMapPost({
 }
 
 export default MiniMapPost;
+

@@ -44,3 +44,4 @@ export const blogPosts: BlogPostMeta[] = [
     featured: false,
   },
 ];
+

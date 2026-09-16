@@ -117,3 +117,4 @@ export function BlogWaitlistCTA({
 }
 
 export default BlogWaitlistCTA;
+

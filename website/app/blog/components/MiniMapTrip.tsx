@@ -334,3 +334,4 @@ export function MiniMapTrip({
 }
 
 export default MiniMapTrip;
+
