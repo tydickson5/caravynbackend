@@ -30,4 +30,15 @@ export class UserController {
         return this.usersService.addToWaitlist(body.email)
     }
 
+    @UseGuards(JwtAuthGuard)
+    @Post('delete')
+    delete(
+        @Body()
+        body: {
+            userId: string
+        }
+    ){
+        return this.usersService.deleteUser(body.userId)
+    }
+
 }

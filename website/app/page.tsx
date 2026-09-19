@@ -21,13 +21,7 @@ export default function Home() {
         >
           Travel Blog
         </a>
-        <span className="text-gray-300 dark:text-zinc-700">•</span>
-        <a
-          href="/preview"
-          className="text-gray-600 dark:text-gray-300 hover:text-[#4B2492] dark:hover:text-purple-300 transition-colors"
-        >
-          Demo Map
-        </a>
+
       </nav>
 
       <div className="text-center max-w-xl mb-8 sm:mb-10 mt-12 sm:mt-0">

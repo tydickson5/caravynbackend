@@ -19,10 +19,7 @@ export default function BlogIndexPage() {
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-12 sm:py-16">
         {/* Header Hero */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#4B2492]/10 text-[#4B2492] dark:bg-[#4B2492]/25 dark:text-purple-300 border border-[#4B2492]/20 mb-3">
-            <span>🗺️</span>
-            <span>Caravyn Field Notes</span>
-          </div>
+
           <h1 className="text-3xl sm:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-4">
             Stories from the road
           </h1>

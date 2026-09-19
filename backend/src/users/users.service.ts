@@ -94,4 +94,13 @@ export class UserService{
         return data
     }
 
+    async deleteUser(userId: string){
+        const { error } = await this.supabase.client.auth.admin.deleteUser(userId)
+
+        if (error) {
+            throw error
+        }
+
+        return { success: true }
+    }
 }
