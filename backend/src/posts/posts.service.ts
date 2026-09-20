@@ -145,7 +145,7 @@ export class PostService{
             throw groupError
         }
 
-        var title = m.username + " posted in " + groupData.name
+        var title = m.username + " posted"
         var text = "@ " + longitude + ", " + latitude
 
         for(let member of data){
