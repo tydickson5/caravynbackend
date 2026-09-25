@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export function BlogFooter() {
   return (
-    <footer className="w-full border-t border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-950 py-12 px-4 sm:px-6 transition-colors">
+    <footer className="w-full border-t border-gray-200/80 dark:border-zinc-800/80 bg-[#F9F1E5] dark:bg-[#090606] py-12 px-4 sm:px-6 transition-colors">
       <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
           <div className="flex items-center gap-2 mb-2">

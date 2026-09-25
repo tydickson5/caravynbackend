@@ -63,7 +63,7 @@ export default function TripClientView({
   };
 
   return (
-    <main className="w-full min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white">
+    <main className="w-full min-h-screen bg-[#F9F1E5] dark:bg-[#090606] text-gray-900 dark:text-white transition-colors">
       {/* Hero Map Section */}
       <section className="relative w-full h-screen">
         {/* Floating Trip Info Badge */}
@@ -127,7 +127,7 @@ export default function TripClientView({
       {/* Waitlist Section */}
       <section
         id="waitlist"
-        className="min-h-screen w-full bg-gradient-to-b from-gray-50 via-purple-50/20 to-gray-100 dark:from-zinc-950 dark:via-[#4B2492]/5 dark:to-black py-24 px-4 flex flex-col items-center justify-center relative"
+        className="min-h-screen w-full bg-[#F9F1E5] dark:bg-[#090606] py-24 px-4 flex flex-col items-center justify-center relative transition-colors"
       >
         <div className="text-center max-w-xl mb-10">
           <span

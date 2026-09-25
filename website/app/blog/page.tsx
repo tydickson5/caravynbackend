@@ -13,7 +13,7 @@ export default function BlogIndexPage() {
   const regularPosts = blogPosts.filter((p) => p.slug !== featuredPost.slug);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-black text-gray-900 dark:text-white transition-colors">
+    <div className="min-h-screen flex flex-col bg-[#F9F1E5] dark:bg-[#090606] text-gray-900 dark:text-white transition-colors">
       <BlogNav />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-12 sm:py-16">

@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 
 export default function BlogTemplatePage() {
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-black text-gray-900 dark:text-white transition-colors">
+    <div className="min-h-screen flex flex-col bg-[#F9F1E5] dark:bg-[#090606] text-gray-900 dark:text-white transition-colors">
       <BlogNav />
 
       <main className="flex-1">
