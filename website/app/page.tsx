@@ -17,10 +17,10 @@ export default function Home() {
         </span>
         <span className="text-gray-300 dark:text-zinc-700">•</span>
         <Link
-          href="/blog"
+          href="/contest"
           className="text-gray-600 dark:text-gray-300 hover:text-[#4B2492] dark:hover:text-purple-300 transition-colors"
         >
-          Travel Blog
+          Contest
         </Link>
       </nav>
 
