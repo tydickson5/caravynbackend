@@ -55,4 +55,26 @@ export class TripController {
     ){
         return this.tripsService.getTripFromId(body.tripId)
     }
+
+    @Post('addUser')
+    async addUser(
+        @Body()
+        body: {
+            tripId: string,
+            userId: string
+        }
+    ){
+        return this.tripsService.addUserToTrip(body.userId, body.tripId, false)
+    }
+
+    @Post('removeUser')
+    async removeUser(
+        @Body()
+        body: {
+            tripId: string,
+            userId: string
+        }
+    ){
+        return this.tripsService.removeUserFromTrip(body.tripId, body.userId)
+    }
 }

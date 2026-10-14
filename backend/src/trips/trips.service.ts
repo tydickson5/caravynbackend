@@ -25,12 +25,59 @@ export class TripService{
             throw error
         }
 
-        var title = username + " just started a trip!"
-        var body = ""
+        //add user to trip
 
-        this.tripStartedNotification(userId, username)
+        var response = await this.addUserToTrip(userId, data.trip_id, true)
+        if(response){
+            this.tripStartedNotification(userId, username)
 
-        return data
+            return data
+        }
+        else{
+            return false
+        }
+        
+    }
+
+    async addUserToTrip(userId: string, tripId: string, isThisUsersTrip: boolean){
+        const { data, error } = await this.supabase.client
+            .from("trip_friend")
+            .upsert({
+                user_id: userId,
+                trip_id: tripId
+            })
+            .select()
+            .single()
+
+        if(error){
+            return false
+        }
+
+        if(!isThisUsersTrip){
+            await this.sendAddFriendToTripNotification(userId, tripId)
+        }
+
+        return true
+    }
+
+    async sendAddFriendToTripNotification(userId: string, tripId: string){
+
+        const {data: name, error} = await this.supabase.client.from('profiles').select("username").eq("id", userId).single()
+
+        let title = name + " invited you to join their trip!"
+        let body = "Tap to join"
+
+        await this.notificationService.createNotification(userId, title, body, tripId, "trip")
+    }
+
+    async removeUserFromTrip(tripId: string, userId: string){
+        const {error} = await this.supabase.client.from("trip_friend").delete().eq("trip_id", tripId).eq("user_id", userId)
+
+        if(error){
+            throw error
+        }
+
+        return true
     }
 
     async tripStartedNotification(userId: string, username: string){
@@ -137,4 +184,6 @@ export class TripService{
 
         return data
     }
+
+    
 }
