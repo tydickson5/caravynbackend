@@ -36,10 +36,21 @@ export class FriendsService{
 
     async sendFriendRequestNotification(friendRequestId: string, friendUserId: string, friendUsername: string){
 
-        var title = friendUsername + " sent you a friend request"
-        var body = "Click to accept"
+        const {data, error} = await this.supabase.client.from("user_notification_settings").select("friends").eq("user_id", friendUserId).single()
 
-        this.notificationService.createNotification(friendUserId, title, body, friendRequestId, "friend request")
+        if(error){
+            throw error
+        }
+
+        const friends = data
+        if(friends){
+            var title = friendUsername + " sent you a friend request"
+            var body = "Click to accept"
+
+            this.notificationService.createNotification(friendUserId, title, body, friendRequestId, "friend request")
+        }
+
+        
     }
 
     async deleteFriendRequest(friendRequestId: string){
@@ -145,10 +156,22 @@ export class FriendsService{
     }
 
     async sendAcceptFriendRequestNotification(friendId: string, friendUserId: string, friendUsername: string){
-        var title = friendUsername + " accepted your friend reqeust"
-        var body = ""
 
-        await this.notificationService.createNotification(friendUserId, title, body, friendId, "friend")
+        const {data, error} = await this.supabase.client.from("user_notification_settings").select("friends").eq("user_id", friendUserId).single()
+
+        if(error){
+            throw error
+        }
+
+        const friends = data
+        if(friends){
+            var title = friendUsername + " accepted your friend reqeust"
+            var body = ""
+
+            await this.notificationService.createNotification(friendUserId, title, body, friendId, "friend")
+        }
+
+        
     }
 
     async denyFriendRequest(friendRequestId){

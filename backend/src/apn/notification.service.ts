@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ApnsService } from "./apns.service";
 import { SupabaseService } from "src/supabaseService";
+import { not } from "supertest/lib/cookies";
 
 @Injectable()
 export class NotificationService {
@@ -10,9 +11,24 @@ export class NotificationService {
             private readonly apnsService: ApnsService
         ) {}
 
+    async userHasAllNotificationsOn(userId: string){
+        const {data, error} = await this.supabase.client.from("user_notification_settings").select("all").eq("user_id", userId).single()
+
+        if(error){
+            throw error
+        }
+
+        return data?.all ?? true
+    }
 
     async createNotification(userId: string, title: string, body: string, someId: string, idType: string) {
         console.log("STEP 1: entered function", userId)
+
+        const notify = await this.userHasAllNotificationsOn(userId)
+        if(notify){
+            console.log("all off")
+            return
+        }
 
         const { data: notification, error } = await this.supabase.client
             .from('notifications')

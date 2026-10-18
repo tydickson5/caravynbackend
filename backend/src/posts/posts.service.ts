@@ -118,40 +118,46 @@ export class PostService{
         }
     }
 
-    async sendNotificaitonToUsers(groupId: string, userId: string, latitude, longitude, postId: string){
-        console.log("test")
-        const {data, error} = await this.supabase.client
-            .from('group_memberships')
-            .select("*")
-            .eq('group_id', groupId)
-
-        if(error){
-            throw error
-        }
-
-        
+    async sendNotificaitonToUsers(userId: string, latitude, longitude, postId: string, state: string){
 
         const {data: m, error: e} = await this.supabase.client.from('profiles')
             .select('*')
             .eq('id', userId)
             .single()
 
-        const {data: groupData, error: groupError} = await this.supabase.client
-            .from("groups")
-            .select("*")
-            .eq('id', groupId)
-            .single()
-        if(groupError){
-            throw groupError
+        const {data: friends, error: friendsError} = await this.supabase.client.from("friends").select().eq("user_id", userId)
+
+        if(friendsError){
+            throw friendsError
         }
 
-        var title = m.username + " posted"
-        var text = "@ " + longitude + ", " + latitude
+        for(let friend of friends){
 
-        for(let member of data){
-            if(member.user_id != userId){
-                await this.notificationService.createNotification(member.user_id,title, text, postId, "post")
+            const {data, error} = await this.supabase.client.from("user_notification_settings").select("trips").eq("user_id", friend.friend_id).single()
+
+            if(error){
+                throw error
             }
+
+            const trips = data.trips
+            if(trips){
+                var title = m.username + " posted"
+                var text = "@ " + longitude + ", " + latitude
+
+                await this.notificationService.createNotification(friend.user_id,title, text, postId, "post")
+            }
+
+            
+        }
+
+        if(state == "public"){
+
+            
+
+        } else {
+            //friend
+
+
         }
     }
 

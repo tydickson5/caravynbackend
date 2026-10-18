@@ -10,6 +10,7 @@ export class TripService{
     ){}
 
     async startTrip(userId: string, username: string, name: string, description: string){
+
         //create trip + notification
         const { data, error } = await this.supabase.client
             .from("trips")
@@ -80,8 +81,35 @@ export class TripService{
         return true
     }
 
-    async tripStartedNotification(userId: string, username: string){
+    async tripStartedNotification(userId: string, username: string, tripId: string, tripName: string){
 
+        
+
+        const {data: friends, error: friendsError} = await this.supabase.client.from("friends").select().eq("user_id", userId)
+
+        if(friendsError){
+            throw friendsError
+        }
+
+        for(let friend of friends){
+
+            const {data, error} = await this.supabase.client.from("user_notification_settings").select("trips").eq("user_id", friend.friend_id).single()
+
+            if(error){
+                throw error
+            }
+
+            const trips = data.trips
+            if(trips){
+                var title = username + " just started a trip!"
+                var body = "Tap to see"
+
+                this.notificationService.createNotification(friend.friend_id, title, body, tripId, "trip")
+                
+            }
+
+            
+        }
     }
 
     async endTrip(tripId: string){
