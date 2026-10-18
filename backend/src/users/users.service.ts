@@ -60,6 +60,9 @@ export class UserService{
             console.error(error)
         }
 
+        //create the notification settings object
+        
+
         return data
     }
 
