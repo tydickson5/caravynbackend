@@ -27,7 +27,7 @@ export class TripService{
 
         //add user to trip
 
-        var response = await this.addUserToTrip(userId, data.trip_id, true)
+        var response = await this.addUserToTrip(userId, data.id, true)
         if(response){
             this.tripStartedNotification(userId, username)
 
@@ -50,7 +50,7 @@ export class TripService{
             .single()
 
         if(error){
-            return false
+            throw error
         }
 
         if(!isThisUsersTrip){
