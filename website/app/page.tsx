@@ -40,6 +40,24 @@ export default function Home() {
       </div>
 
       <WaitlistForm />
+
+      <footer className="mt-12 text-center text-xs text-gray-400 dark:text-zinc-600 flex items-center justify-center gap-3">
+        <span>&copy; {new Date().getFullYear()} Caravyn</span>
+        <span>•</span>
+        <Link
+          href="/privacy"
+          className="hover:text-[#4B2492] dark:hover:text-purple-400 transition-colors underline-offset-2 hover:underline"
+        >
+          Privacy Policy
+        </Link>
+        <span>•</span>
+        <Link
+          href="/terms"
+          className="hover:text-[#4B2492] dark:hover:text-purple-400 transition-colors underline-offset-2 hover:underline"
+        >
+          Terms of Service
+        </Link>
+      </footer>
     </main>
   );
 }

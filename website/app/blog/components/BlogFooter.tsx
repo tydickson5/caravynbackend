@@ -35,6 +35,12 @@ export function BlogFooter() {
           <Link href="/#waitlist" className="hover:text-[#4B2492] dark:hover:text-purple-300 transition-colors">
             Beta Waitlist
           </Link>
+          <Link href="/privacy" className="hover:text-[#4B2492] dark:hover:text-purple-300 transition-colors">
+            Privacy Policy
+          </Link>
+          <Link href="/terms" className="hover:text-[#4B2492] dark:hover:text-purple-300 transition-colors">
+            Terms of Service
+          </Link>
         </div>
       </div>
 
