@@ -25,7 +25,7 @@ export class NotificationService {
         console.log("STEP 1: entered function", userId)
 
         const notify = await this.userHasAllNotificationsOn(userId)
-        if(notify){
+        if(!notify){
             console.log("all off")
             return
         }

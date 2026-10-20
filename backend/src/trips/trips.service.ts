@@ -30,7 +30,7 @@ export class TripService{
 
         var response = await this.addUserToTrip(userId, data.id, true)
         if(response){
-            this.tripStartedNotification(userId, username)
+            this.tripStartedNotification(userId, username, data.id, name)
 
             return data
         }
