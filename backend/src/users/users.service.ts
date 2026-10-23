@@ -61,7 +61,15 @@ export class UserService{
         }
 
         //create the notification settings object
-        
+        const {data: settingsData, error: settingsError} = await this.supabase.client
+            .from("user_notification_settings")
+            .insert({
+                user_id: userId
+            })
+
+        if(error){
+            throw error;
+        }
 
         return data
     }
